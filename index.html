@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mumbai Taxi Radio — Ansari Afroz</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#070707;color:#fff;font-family:Arial,sans-serif}
+.app{max-width:950px;min-height:900px;margin:auto;overflow:hidden;position:relative;background:radial-gradient(circle at 50% 15%,#4a3421,#17100a 48%,#070707 88%)}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px;position:relative;z-index:20}
+.logo{display:flex;gap:11px;align-items:center}.logoIcon{width:48px;height:48px;border-radius:50%;background:#ffd21f;color:#111;display:grid;place-items:center;font-size:25px}
+.small{font-size:10px;color:#aaa;letter-spacing:2px;margin-top:4px}.clock{text-align:right;font-size:25px;font-weight:900}.vis{font-size:11px;color:#ccc}.live{color:#39ff78}
+.hero{text-align:center;position:relative;z-index:10;padding:15px}.tag{font-size:10px;letter-spacing:4px;color:#aaa}.hero h1{font-size:clamp(50px,11vw,100px);line-height:.9;margin:18px 0 8px;text-shadow:0 8px 25px #000}
+.city{position:absolute;bottom:420px;left:0;right:0;height:150px}.building{position:absolute;bottom:0;background:#12100d;border:1px solid #29231d;width:65px}.building:after{content:"";position:absolute;inset:10px;background:repeating-linear-gradient(#d89b32 0 3px,transparent 3px 14px);opacity:.25}.b1{left:3%;height:90px}.b2{left:13%;height:140px}.b3{left:25%;height:105px}.b4{right:24%;height:130px}.b5{right:12%;height:90px}.b6{right:2%;height:150px}
+.road{height:285px;margin-top:25px;position:relative;overflow:hidden;background:linear-gradient(#0000 0 23%,#151515 23%);border-bottom:3px solid #555}.road:before{content:"";position:absolute;left:0;right:0;top:0;height:25%;background:linear-gradient(#0000,#0008)}
+.road:after{content:"";position:absolute;left:0;right:0;bottom:44px;height:5px;background:repeating-linear-gradient(90deg,#eee 0 70px,transparent 70px 145px);animation:road .8s linear infinite}@keyframes road{to{background-position:-145px}}
+.car{position:absolute;width:120px;height:42px;border-radius:15px 20px 7px 7px;bottom:90px;z-index:2;box-shadow:0 10px 25px #000}.car:before{content:"";position:absolute;left:25px;top:-18px;width:70px;height:23px;background:#28343a;border-radius:18px 18px 0 0}.car:after{content:"";position:absolute;left:18px;bottom:-10px;width:20px;height:20px;border-radius:50%;background:#111;box-shadow:64px 0 #111}.c1{background:#a72d27;animation:car1 11s linear infinite}.c2{background:#315f83;bottom:145px;transform:scale(.7);animation:car2 14s linear infinite}@keyframes car1{from{left:-150px}to{left:110%}}@keyframes car2{from{left:110%}to{left:-150px}}
+.taxi{position:absolute;z-index:8;left:50%;bottom:48px;transform:translateX(-50%);width:min(590px,88vw);height:140px;background:linear-gradient(#ffd529 0 40%,#111 40%);border:4px solid #090909;border-radius:25px 30px 13px 13px;box-shadow:0 25px 55px #000;transition:.3s}
+.roof{position:absolute;left:17%;right:17%;top:-53px;height:61px;background:#111;border:4px solid #090909;border-radius:70px 70px 0 0}.roofSign{position:absolute;left:50%;top:9px;transform:translateX(-50%);background:#ffd529;color:#111;padding:6px 13px;border-radius:4px;font-weight:1000;font-size:9px;white-space:nowrap}
+.win{position:absolute;top:10px;height:48px;background:linear-gradient(135deg,#73848c,#172026);border:3px solid #17120e;border-radius:8px}.w1{left:22px;width:105px}.w2{left:137px;width:105px}.w3{right:22px;width:105px}
+.door{position:absolute;top:5px;left:130px;width:125px;height:122px;border-left:3px solid #17120e;border-right:3px solid #17120e;transform-origin:left center;transition:transform .65s cubic-bezier(.2,.8,.2,1);z-index:7}.door.open{transform:perspective(650px) rotateY(-72deg);background:#050505;box-shadow:8px 0 18px #000}.handle{position:absolute;right:8px;top:61px;width:22px;height:5px;background:#bbb;border-radius:5px}
+.meter{position:absolute;right:16px;top:62px;width:55px;height:38px;background:#151515;border:2px solid #ffd21f;border-radius:6px;color:#ffd21f;font-size:7px;font-weight:900;display:grid;place-items:center;line-height:9px;z-index:9;box-shadow:inset 0 0 8px #000}.meter strong{font-size:11px}.meterNum{font-family:monospace;font-size:10px;color:#fff}
+.plate{position:absolute;left:50%;bottom:13px;transform:translateX(-50%);background:#eee;color:#111;border:1px solid #111;border-radius:3px;padding:4px 10px;font-size:9px;font-weight:900;z-index:10}
+.taxiName{position:absolute;left:50%;top:77px;transform:translateX(-50%);font-size:17px;font-weight:1000;color:#111;letter-spacing:4px;z-index:6}
+.light{position:absolute;top:72px;width:42px;height:27px;border-radius:50%;background:#4d4d4d;z-index:12;transition:.25s}.ll{left:4px}.lr{right:4px}.taxi.lit .light{background:#fff;box-shadow:0 0 15px #fff,0 0 45px #ffe47d,0 0 80px #ffe47d}
+.ind{position:absolute;top:105px;width:20px;height:8px;border-radius:5px;background:#49380f;z-index:13}.il{left:5px}.ir{right:5px}.taxi.blink .ind{background:#ff9d00;box-shadow:0 0 14px #ff9d00;animation:blink .65s infinite}@keyframes blink{50%{opacity:.2}}
+.wheel{position:absolute;bottom:-28px;width:58px;height:58px;border-radius:50%;background:#080808;border:7px solid #777;z-index:15}.wheel:after{content:"";position:absolute;inset:13px;border-radius:50%;background:#aaa}.wl{left:63px}.wr{right:63px}
+.controls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px}.btn{padding:11px 14px;border:1px solid #ffffff25;border-radius:25px;background:#211910;color:#fff;cursor:pointer;font-weight:800}.btn:hover{transform:translateY(-1px)}.btn.on{background:#ffd21f;color:#111}
+.player{margin:28px 15px;background:#21170eeb;border:1px solid #ffffff18;border-radius:25px;padding:16px;position:relative;z-index:20}.player h2{margin:0 0 12px;font-size:18px}.yt{aspect-ratio:16/9;width:100%;border-radius:16px;overflow:hidden;background:#000}.yt iframe{width:100%;height:100%;border:0}.note{text-align:center;color:#999;font-size:12px;margin-top:10px}
+footer{text-align:center;color:#777;padding:35px 10px}.created{margin-top:8px;color:#ffd21f;font-weight:900}
+@media(max-width:600px){.taxi{height:115px}.roof{top:-44px;height:52px}.win{height:38px}.w1{left:12px;width:70px}.w2{left:91px;width:70px}.w3{right:12px;width:70px}.door{left:88px;width:96px;height:98px}.taxiName{top:60px;font-size:12px}.meter{right:10px;top:53px;transform:scale(.8)}.light{top:58px;width:33px;height:22px}.ind{top:89px}.wheel{width:48px;height:48px;bottom:-24px}.wl{left:40px}.wr{right:40px}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="city"><div class="building b1"></div><div class="building b2"></div><div class="building b3"></div><div class="building b4"></div><div class="building b5"></div><div class="building b6"></div></div>
+<header>
+<div class="logo"><div class="logoIcon">🚕</div><div><b>MUMBAI TAXI</b><div class="small">MUMBAI · MAHARASHTRA</div></div></div>
+<div><div class="clock" id="clock">00:00</div><div class="vis"><span class="live">●</span> <span id="visitors">1</span> CURRENT VISITORS</div></div>
+</header>
+<section class="hero">
+<div class="tag">MUMBAI TRAFFIC · NON-STOP MUSIC</div>
+<h1>मुंबई टैक्सी</h1>
+<div class="tag">ALL NIGHT THROUGH MUMBAI</div>
+<div class="road">
+<div class="car c1"></div><div class="car c2"></div>
+<div class="taxi" id="taxi">
+<div class="roof"><div class="roofSign">KAALI PEELI · MUMBAI TAXI</div></div>
+<div class="win w1"></div><div class="win w2"></div><div class="win w3"></div>
+<div class="door" id="taxiDoor"><div class="handle"></div></div>
+<div class="taxiName">TAXI</div>
+<div class="meter">FARE METER<br><strong>₹ <span class="meterNum" id="fare">20.00</span></strong></div>
+<div class="plate">MH 01 · AF 2026</div>
+<div class="light ll"></div><div class="light lr"></div>
+<div class="ind il"></div><div class="ind ir"></div>
+<div class="wheel wl"></div><div class="wheel wr"></div>
+</div></div>
+<div class="controls">
+<button class="btn" id="doorBtn" onclick="toggleDoor()">🚪 Door Open</button>
+<button class="btn" id="lightBtn" onclick="toggleLights()">💡 Headlights OFF</button>
+<button class="btn" id="indBtn" onclick="toggleIndicators()">🔶 Indicators OFF</button>
+<button class="btn" onclick="playHorn()">📢 Horn OK Please</button>
+<button class="btn" onclick="toggleMeter()">💰 Meter Start/Stop</button>
+</div>
+</section>
+<section class="player">
+<h2>🎵 MUMBAI TAXI RADIO</h2>
+<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=PLMRKdK25AuPVjHl9Kdb-gkBy0Cm7Zi2xo&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+<div class="note">Your YouTube playlist is connected • Music for the Mumbai ride</div>
+</section>
+<footer>🚕 MUMBAI TAXI RADIO<div class="created">Created by Ansari Afroz</div></footer>
+</div>
+<script>
+const taxi=document.getElementById('taxi');
+let doorOpen=false,lightsOn=false,indicatorsOn=false,meterRunning=false,meterTimer=null,fare=20;
+function setOn(id,on){document.getElementById(id).classList.toggle('on',on)}
+function toggleDoor(){doorOpen=!doorOpen;document.getElementById('taxiDoor').classList.toggle('open',doorOpen);document.getElementById('doorBtn').textContent=doorOpen?'🚪 Door Close':'🚪 Door Open';setOn('doorBtn',doorOpen)}
+function toggleLights(){lightsOn=!lightsOn;taxi.classList.toggle('lit',lightsOn);document.getElementById('lightBtn').textContent=lightsOn?'💡 Headlights ON':'💡 Headlights OFF';setOn('lightBtn',lightsOn)}
+function toggleIndicators(){indicatorsOn=!indicatorsOn;taxi.classList.toggle('blink',indicatorsOn);document.getElementById('indBtn').textContent=indicatorsOn?'🔶 Indicators ON':'🔶 Indicators OFF';setOn('indBtn',indicatorsOn)}
+function toggleMeter(){meterRunning=!meterRunning;if(meterRunning){meterTimer=setInterval(()=>{fare+=.5;document.getElementById('fare').textContent=fare.toFixed(2)},1000)}else clearInterval(meterTimer)}
+function playHorn(){
+try{
+const AC=window.AudioContext||window.webkitAudioContext;const c=new AC();
+const gain=c.createGain();gain.gain.setValueAtTime(.0001,c.currentTime);gain.gain.exponentialRampToValueAtTime(.35,c.currentTime+.03);gain.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.55);gain.connect(c.destination);
+[220,196].forEach((f,n)=>{const o=c.createOscillator();o.type='square';o.frequency.setValueAtTime(f,c.currentTime+n*.13);o.connect(gain);o.start(c.currentTime+n*.13);o.stop(c.currentTime+.55)});setTimeout(()=>c.close(),700)
+}catch(e){alert('Tap the page once, then press Horn again.')}}
+function clock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:false})}setInterval(clock,1000);clock();
+</script>
+</body>
+</html>
